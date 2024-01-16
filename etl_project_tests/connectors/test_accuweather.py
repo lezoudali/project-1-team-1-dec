@@ -13,10 +13,13 @@ def test_accuweather_client_api(setup):
     accuweather_client = AccuWeatherApiClient(
         api_key=os.environ.get("API_KEY")
     )
+
+    number_of_forecast_days = 5  # this is equal to the len of the API response
+
     data = accuweather_client.get_forecast(
         location_key=60449,
-        forecast_days=5
+        forecast_days=number_of_forecast_days
     )
 
     assert type(data) == list
-    assert len(data) > 0
+    assert len(data) == number_of_forecast_days
