@@ -46,14 +46,13 @@ if __name__ == "__main__":
     )
 
     config = pipeline_config.get("config")
-    pipeline_logging = PipelineLogging(
-        config.get("name"), config.get("log_folder_path")
-    )
+    pipeline_name = pipeline_config.get("name")
+    pipeline_logging = PipelineLogging(pipeline_name, config.get("log_folder_path"))
     metadata_logger = MetaDataLogging(
-        config.get("name"),
+        pipeline_name,
         postgresql_client,
         config,
-        f"{config.get('name')}_pipeline_logs",
+        f"{pipeline_name}_pipeline_logs",
     )
 
     metadata_logger.log()
