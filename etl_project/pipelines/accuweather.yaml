@@ -1,7 +1,9 @@
 name: accuweather
 config:
+  name: accuweather
   location_key: 60449
   forecast_days: 5
   staging_table_name: staging_forecast_weather
   serving_table_name: serving_forecast_weather
   transform_template_path: "./etl_project/assets/sql/transform"
+  log_folder_path: "./etl_project/logs"
