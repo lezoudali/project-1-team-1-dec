@@ -172,6 +172,86 @@ def raw_data_transform(
 
     return df_clean_forecast
 
+def uv_index_category(uv_index) -> str:
+    """
+    Perform transformation on uv index to categorize according to international standars
+    
+    Args: 
+        uv index : uv index value that comes from raw data extracted from the current_weather API 
+    Returns:
+        A text with the category of the uv index
+    reference:
+        https://www.epa.gov/sites/default/files/documents/uviguide.pdf
+    
+    """
+    if(uv_index<=2):
+        return 'LOW'
+    elif(uv_index<=5):
+        return 'MODERATE'
+    elif(uv_index<=7):
+        return 'HIGH'
+    elif(uv_index<=10):
+        return 'VERY HIGH'
+    else:
+        return 'EXTREME'
+    
+def raw_current_conditions_transform(
+    df_current_conditions: pd.DataFrame,
+    uv_index_category_func
+) -> pd.DataFrame:
+    """
+    Perform transformation on dataframe returned from raw data extracted from the current_weather API
+    
+    Args: 
+        df_current_conditions : dataframe that comes from raw data extracted from the current_weather API
+        uv_index_category_func : function to categoriza the uv index
+    Returns:
+        A dataframe with the current weather conditions metrics
+            
+    Raises:
+        Exception when it is not possible to extract data from the API.
+    """
+    # transformation 1 -> filter columns
+    columns_of_interest = [
+    'location_key',
+    'location_name',
+    'LocalObservationDateTime',
+    'WeatherText',
+    'HasPrecipitation',
+    'PrecipitationType',
+    'Temperature.Metric.Value',
+    'RealFeelTemperature.Metric.Value',
+    'DewPoint.Metric.Value',
+    'Wind.Direction.Localized',
+    'Wind.Speed.Metric.Value',
+    'UVIndex',
+    'Visibility.Metric.Value',
+    'Pressure.Metric.Value',
+    'PrecipitationSummary.Precipitation.Metric.Value'
+]
+    df_clean_current_conditions = df_current_conditions[columns_of_interest]
+    # transformation 2 -> renaming fields
+    renaming_fields_map = {
+    'LocalObservationDateTime': "date",
+    'WeatherText': 'weather_text',
+    'HasPrecipitation' : 'has_precipitation',
+    'PrecipitationType' : 'precipitation_type',
+    'PrecipitationSummary.Precipitation.Metric.Value' : 'precipition_value',
+    'Temperature.Metric.Value' : 'temperature',
+    'RealFeelTemperature.Metric.Value' : 'real_feel_temperature',
+    'DewPoint.Metric.Value': 'relative_humidity',
+    'Wind.Direction.Localized' : 'wind_dewpoint_direction',
+    'Wind.Speed.Metric.Value' : 'wind_speed',
+    'UVIndex': 'uv_index',
+    'Visibility.Metric.Value': 'visibility',
+    'Pressure.Metric.Value' : 'pressure'
+}
+    df_clean_current_conditions = df_clean_current_conditions.rename(columns=renaming_fields_map)
+    # transformation 3 -> convert "Date" field to date (and not timestamp)
+    df_clean_current_conditions["date"] = pd.to_datetime(df_clean_current_conditions["date"]).dt.date
+    # transformation 4 --> create a column from a transformation made from another function
+    df_clean_current_conditions['uv_index_category'] = uv_index_category_func(uv_index= df_clean_current_conditions.uv_index.values)
+    return df_clean_current_conditions
 
 def staging_upsert_load(
     dataframe: pd.DataFrame,
