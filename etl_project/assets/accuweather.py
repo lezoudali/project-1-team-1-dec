@@ -23,6 +23,29 @@ def extract_forecast_weather(
     )
     return pd.json_normalize(data=data)
 
+def extract_current_weather(
+    accuweather_client: AccuWeatherApiClient,
+    location_name: str
+) -> pd.DataFrame:
+    """
+    Extract forecast data from AccuWeather API.
+
+    The forecast data is extracted from a desired location based on the location_key.
+    
+    The forecast_days argument define the number of forecast days returned. Possible
+    values are 1, 5, 10, and 15.
+    """
+    location_key = accuweather_client.get_location(
+        location_name = location_name
+    )
+    
+    data = accuweather_client.get_current_weather(
+        location_key = location_key
+    )
+    data['location_name'] = location_name
+    data['location_key'] = location_key
+    return pd.json_normalize(data=data)
+
 
 def raw_data_transform(
     df_forecast: pd.DataFrame,

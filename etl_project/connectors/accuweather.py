@@ -44,35 +44,7 @@ class AccuWeatherApiClient:
                 f"Failes to extract data from AccuWeather API. Status Code: {response.status_code}. Response: {response.text}"
             )
             
-    def get_location(
-        self, city: str
-    ) -> str:
-        """Extract location data from a city name using the location API
-        
-        Args: 
-            q: city text to search for.
-            
-        Returns:
-            A string with the key of the city
-            
-        Raises:
-            Exception when it is not possible to extract data from the API.
-        """
-        location_url = f"{self.base_url}/locations/v1/cities/search"
-        params = {
-            "q": city,
-            "apikey" : self.api_key,
-            "language" : "en-us",
-            "details" : "true",
-        }
-        response = requests.get(url=location_url, params=params)
-        if response.status_code == 200 and response.json()[0].get("Key") is not None:
-            return response.json()[0].get("Key")
-        else:
-            raise Exception(
-                f"Failes to extract data from AccuWeather API. Status Code: {response.status_code}. Response: {response.text}"
-            )
-def get_current_weather(
+    def get_current_weather(
         self, location_key: int
     ) -> dict:
         """Extract location data from a city name using the location API
@@ -95,6 +67,32 @@ def get_current_weather(
         response = requests.get(url=location_url, params=params)
         if response.status_code == 200:
             return response.json()[0]
+        else:
+            raise Exception(
+                f"Failes to extract data from AccuWeather API. Status Code: {response.status_code}. Response: {response.text}"
+            )
+    def get_location(self, location_name: str) -> str:
+        """Extract location data from a city name using the location API
+        
+        Args: 
+            q: city text to search for.
+            
+        Returns:
+            A string with the key of the city
+            
+        Raises:
+            Exception when it is not possible to extract data from the API.
+        """
+        location_url = f"{self.base_url}/locations/v1/cities/search"
+        params = {
+            "q": location_name,
+            "apikey" : self.api_key,
+            "language" : "en-us",
+            "details" : "false",
+        }
+        response = requests.get(url=location_url, params=params)
+        if response.status_code == 200 and response.json()[0].get("Key") is not None:
+            return response.json()[0].get("Key")
         else:
             raise Exception(
                 f"Failes to extract data from AccuWeather API. Status Code: {response.status_code}. Response: {response.text}"
