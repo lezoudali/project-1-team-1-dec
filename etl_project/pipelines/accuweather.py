@@ -156,15 +156,15 @@ if __name__ == "__main__":
         )
 
         transform_load(
-            environment_path=config.get("transform_template_path"),
+            environment_path=config.get("transform_template_path"), 
             postgresql_client=postgresql_client,
-            source_table_name=config.get("staging_table_name"),
+            source_table_name=config.get("staging_table_name"), 
             target_table_name=serving_table,
             metadata=serving_metadata,
         )
-        # metadata_logger.log(
-        #     status=MetaDataLoggingStatus.RUN_SUCCESS, logs=pipeline_logging.get_logs()
-        # )
+        #metadata_logger.log(
+        #     status=MetaDataLoggingStatus.RUN_SUCCESS, logs=pipeline_logging.get_logs() 
+        #     )
         
         staging_metadata_current_conditions = MetaData()
         staging_table_current_conditions = Table(
