@@ -171,7 +171,7 @@ if __name__ == "__main__":
             config.get("staging_table_name_current_conditions"),
             staging_metadata_current_conditions,
             Column("date", Date, primary_key=True),
-            Column("location_key", Integer),
+            Column("location_key", Integer, primary_key=True),
             Column("location_name", String),
             Column('weather_text', String),
             Column('has_precipitation', Float),
@@ -203,8 +203,7 @@ if __name__ == "__main__":
             serving_metadata_current_conditions,
             Column("date", Date, primary_key=True),
             Column("location_key", Integer, primary_key=True),
-            Column("location_name", String, primary_key=True),
-            Column('uv_index_category', String),
+            Column('count_precipitations_last_five_days', Integer),
         )
         
         transform_load(
