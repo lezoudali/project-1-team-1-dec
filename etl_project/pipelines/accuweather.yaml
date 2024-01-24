@@ -6,3 +6,7 @@ config:
   serving_table_name: serving_forecast_weather
   transform_template_path: "./etl_project/assets/sql/transform"
   log_folder_path: "./etl_project/logs"
+  location_name: 'pucon'
+  transform_template_path_current_conditions: "./etl_project/assets/sql/transform"
+  staging_table_name_current_conditions: staging_current_weather
+  serving_table_name_current_conditions: serving_current_weather
