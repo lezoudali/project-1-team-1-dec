@@ -18,10 +18,8 @@ We aim to provide data to answer the following questions:
 ## Source datasets
 | Source name | Source type | Source documentation |
 | - | - | - |
+| AccuWeather Location API | REST API | [Documentation](https://developer.accuweather.com/accuweather-locations-api/apis) |
 | AccuWeather Forecast API | REST API | [Documentation](https://developer.accuweather.com/accuweather-forecast-api/apis) |
 
-## Solution architecture
-> PLACEHOLDER: add architecture diagram created using tool such as draw io
-
 ## Breakdown of tasks
-> PLACEHOLDER: add photo of notion
+The group assigned and tracked tasks using Notion
